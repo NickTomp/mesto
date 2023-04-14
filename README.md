@@ -26,7 +26,7 @@
 
 ## Ссылка на проект
 
-???
+<https://nicktomp.github.io/mesto/>
 
 ## Автор
 
