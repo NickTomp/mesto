@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./pages/index.css">
+    <title>Mesto Russia</title>
+    <meta name="description" content="Проектная работа четвёртого спринта">
+    <meta name="keywords" content="html, css, js, mesto">
+    <meta name="author" content="Николай Томп">
+</head>
+<body class="page">
+    <header class="header">
+        <div class="header__logo"></div>
+        <div class="header__line"></div>
+    </header>
+    <main class="content">
+        <section class="profile">
+            <div class="profile__avatar"></div>
+            <div class="profile__info">
+                <p class="profile__name">Жак-Ив Кусто</p>
+                <p class="profile__job">Исследователь океана</p>
+                <button type="button" class="profile__button"></button>
+            </div>
+            <button type="button" class="profile__add-button"></button>
+        </section>
+        <ul class="elements">
+            <li class="elements__element">
+                <img class="elements__image" src="./images/multinskiye.jpg" alt="Карачаевск">
+                <div class="elements__info">
+                    <p class="elements__text">Мультинские озёра</p>
+                    <button type="button" class="elements__like-button"></button>
+                </div>
+            </li>
+            <li class="elements__element">
+                <img class="elements__image" src="./images/sakhalin.jpg" alt="остров Сахалин">
+                <div class="elements__info">
+                    <p class="elements__text">Сахалин</p>
+                    <button type="button" class="elements__like-button"></button>
+                </div>
+            </li>
+            <li class="elements__element">
+                <img class="elements__image" src="./images/Baikal.jpeg" alt="Байкал">
+                <div class="elements__info">
+                    <p class="elements__text">Байкал</p>
+                    <button type="button" class="elements__like-button"></button>
+                </div>
+            </li>
+            <li class="elements__element">
+                <img class="elements__image" src="./images/Dombai.jpg" alt="Домбай">
+                <div class="elements__info">
+                    <p class="elements__text">Домбай</p>
+                    <button type="button" class="elements__like-button"></button>
+                </div>
+            </li>
+            <li class="elements__element">
+                <img class="elements__image" src="./images/Karelia.webp" alt="Карелия">
+                <div class="elements__info">
+                    <p class="elements__text">Карелия</p>
+                    <button type="button" class="elements__like-button"></button>
+                </div>
+            </li>
+            <li class="elements__element">
+                <img class="elements__image" src="./images/Ural.jpg" alt="Уральские горы">
+                <div class="elements__info">
+                    <p class="elements__text">Уральские горы</p>
+                    <button type="button" class="elements__like-button"></button>
+                </div>
+            </li>
+        </ul>
+    </main>
+    <footer class="footer">
+        <div class="footer__author">&copy; 2023 Николай Томп</div>
+    </footer>
+    <div class="popup">
+        <form class="popup__container">
+            <div class="popup__close-button"></div>
+            <h2 class="popup__header">Редактировать профиль</h2>
+            <input type="text" id="name-input" placeholder="Имя" class="popup__text-input" value="">
+            <input type="text" id="job-input" placeholder="О себе" class="popup__text-input" value="">
+            <button type="submit" class="popup__submit-button">Сохранить</button>
+        </form>
+    </div>
+    <script src="./scripts/index.js"></script>
+</body>
+</html>
