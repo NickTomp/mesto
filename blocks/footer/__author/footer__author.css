@@ -4,6 +4,7 @@
     font-size: 18px;
     line-height: 22px;
     color: #545454;
+    margin: 0;
 }
 @media screen and (max-width: 920px) {
     .footer__author {
@@ -15,5 +16,6 @@
         text-align: start;
         font-size: 14px;
         line-height: 17px;
+        max-height: 14px;
     }
 }

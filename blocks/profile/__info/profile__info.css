@@ -10,5 +10,6 @@
     .profile__info {
         justify-content: center;
         margin-top: 26px;
+        min-height: 54px;
     }
 }   
