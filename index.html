@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +9,6 @@
     <meta name="keywords" content="html, css, js, mesto">
     <meta name="author" content="Николай Томп">
 </head>
-
 <body class="page">
     <header class="header">
         <div class="header__logo"></div>
@@ -27,55 +25,13 @@
         </section>
         <section>
             <ul class="elements">
-                <li class="elements__element">
-                    <img class="elements__image" src="./images/multinskiye.jpg" alt="Карачаевск">
-                    <div class="elements__info">
-                        <h2 class="elements__text">Мультинские озёра</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__element">
-                    <img class="elements__image" src="./images/sakhalin.jpg" alt="остров Сахалин">
-                    <div class="elements__info">
-                        <h2 class="elements__text">Сахалин</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__element">
-                    <img class="elements__image" src="./images/Baikal.jpeg" alt="Байкал">
-                    <div class="elements__info">
-                        <h2 class="elements__text">Байкал</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__element">
-                    <img class="elements__image" src="./images/Dombai.jpg" alt="Домбай">
-                    <div class="elements__info">
-                        <h2 class="elements__text">Домбай</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__element">
-                    <img class="elements__image" src="./images/Karelia.webp" alt="Карелия">
-                    <div class="elements__info">
-                        <h2 class="elements__text">Карелия</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
-                <li class="elements__element">
-                    <img class="elements__image" src="./images/Ural.jpg" alt="Уральские горы">
-                    <div class="elements__info">
-                        <h2 class="elements__text">Уральские горы</h2>
-                        <button type="button" class="elements__like-button"></button>
-                    </div>
-                </li>
             </ul>
         </section>
     </main>
     <footer class="footer">
         <p class="footer__author">&copy; 2023 Николай Томп</p>
     </footer>
-    <div class="popup">
+    <div class="popup" id="profile-popup">
         <div class="popup__container">
             <button type="button" class="popup__close-button" aria-label="Закрыть поп-ап"></button>
             <form class="popup__form" name="profile">
@@ -86,7 +42,34 @@
             </form>
         </div>
     </div>
+    <div class="popup" id="image-popup">
+        <div class="popup__container">
+            <button type="button" class="popup__close-button" aria-label="Закрыть поп-ап"></button>
+            <form class="popup__form" name="image">
+                <h2 class="popup__header">Новое место</h2>
+                <input type="text" id="title-input" name="title" required placeholder="Название" class="popup__text-input" value="">
+                <input type="text" id="link-input" name="link" required placeholder="Ссылка на картинку" class="popup__text-input" value="">
+                <button type="submit" class="popup__submit-button">Создать</button>
+            </form>
+        </div>
+    </div>
+    <div class="view-popup" id="view-popup">
+        <div class="view-popup__container">
+            <button type="button" class="popup__close-button" aria-label="Закрыть поп-ап"></button>
+            <img class="view-popup__image" src="#" alt="">
+            <p class="view-popup__caption"></p>
+        </div>
+    </div>
+<template id="image-element">
+    <li class="elements__element">
+        <button type="button" class="elements__delete-button"></button>
+        <img class="elements__image" src="" alt="">
+        <div class="elements__info">
+            <h2 class="elements__text"></h2>
+            <button type="button" class="elements__like-button"></button>
+        </div>  
+    </li>
+</template>
     <script src="./scripts/index.js"></script>
 </body>
-
 </html>

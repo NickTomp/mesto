@@ -18,13 +18,16 @@
 @import url(../blocks/elements/__element/elements__element.css);
 @import url(../blocks/elements/__image/elements__image.css);
 @import url(../blocks/elements/__info/elements__info.css);
+@import url(../blocks/elements/__delete-button/elements__delete-button.css);
 @import url(../blocks/elements/__like-button/elements__like-button.css);
+@import url(../blocks/elements/__like-button/_active/elements__like-button_active.css);
 @import url(../blocks/elements/__text/elements__text.css);
 /*Импорт стилей для footer*/
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__author/footer__author.css);
 /*Импорт стилей для pop-up*/
 @import url(../blocks/popup/popup.css);
+@import url(../blocks/view-popup/view-popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__form/popup__form.css);
@@ -32,3 +35,6 @@
 @import url(../blocks/popup/__close-button/popup__close-button.css);
 @import url(../blocks/popup/__submit-button/popup__submit-button.css);
 @import url(../blocks/popup/__text-input/popup__text-input.css);
+@import url(../blocks/view-popup/__container/view-popup__container.css);
+@import url(../blocks/view-popup/__image/view-popup__image.css);
+@import url(../blocks/view-popup/__caption/view-popup__caption.css);
