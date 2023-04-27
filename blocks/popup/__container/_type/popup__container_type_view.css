@@ -1,14 +1,14 @@
-.view-popup__container {
+.popup__container_type_view {
     position: relative;
     background-color: transparent;
-    border-radius: 10px;
     width: min-content;
     height: min-content;
     margin: auto;   
 }
 @media screen and (max-width: 540px) {
-    .view-popup__container {
+    .popup__container_type_view {
         min-width: 240px;
         min-height: 300px;
     }
 }
+

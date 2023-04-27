@@ -49,8 +49,8 @@ const initialCards = [
 const imageTemplate = document.querySelector('#image-element').content;
 let cardsList = document.querySelector('.elements');
 const viewPopup = document.querySelector('#view-popup');
-const viewPopupImage = viewPopup.querySelector('.view-popup__image');
-const viewPopupText = viewPopup.querySelector('.view-popup__caption');
+const viewPopupImage = viewPopup.querySelector('.popup__image');
+const viewPopupText = viewPopup.querySelector('.popup__caption');
 const viewPopupCloseButton = viewPopup.querySelector('.popup__close-button');
 //Создание первичных событий, объявление вторичных переменных
 addCardsArray();
