@@ -77,11 +77,14 @@ function handleProfileFormSubmit(evt) {
     closePopup(profilePopup);
 }
 //(для image)
-function createCard() {
-    imageElement = imageTemplate.querySelector('.elements__element').cloneNode(true);
+function createCard(name, link) {
+    const imageElement = imageTemplate.querySelector('.elements__element').cloneNode(true);
     const deleteButton = imageElement.querySelector('.elements__delete-button');
     const likeButton = imageElement.querySelector('.elements__like-button');
     const imageContent = imageElement.querySelector('.elements__image');
+    imageElement.querySelector('.elements__image').src = link;
+    imageElement.querySelector('.elements__image').alt = name;
+    imageElement.querySelector('.elements__text').textContent = `${name}`;
     deleteButton.addEventListener('click', function (evt) {
         deleteCard(evt);
     })
@@ -89,16 +92,14 @@ function createCard() {
         likeToggle(evt);
     })
     imageContent.addEventListener('click', function (evt) {
-        openImageViewPopup(evt);
+        startImageViewPopup(evt);
+        openPopup(viewPopup);
     })
     return imageElement
 }
 function addCardsArray() {
     for (let i = 0; i < initialCards.length; i++) {
-        const imageElement = createCard();
-        imageElement.querySelector('.elements__image').src = initialCards[i].link;
-        imageElement.querySelector('.elements__image').alt = initialCards[i].alt;
-        imageElement.querySelector('.elements__text').textContent = `${initialCards[i].name}`;
+        const imageElement = createCard(initialCards[i].name, initialCards[i].link);
         cardsList.append(imageElement);
     }
 }
@@ -122,17 +123,13 @@ function likeToggle(evt) {
     const eventTarget = evt.target;
     eventTarget.classList.toggle('elements__like-button_active');
 }
-function openImageViewPopup(evt) {
+function startImageViewPopup(evt) {
     const eventTarget = evt.target;
     const imageLink = eventTarget.src;
     const imageText = eventTarget.alt;
     viewPopupImage.src = imageLink;
     viewPopupImage.alt = imageText;
     viewPopupText.textContent = imageText;
-    viewPopup.classList.add('popup_opened');
-}
-function closeImageViewPopup() {
-    viewPopup.classList.remove('popup_opened');
 }
 // Создание обработчиков пользовательских событий
 closeButtons.forEach((button) => {
