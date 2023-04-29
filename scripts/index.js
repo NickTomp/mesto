@@ -107,10 +107,7 @@ function handleImageFormSubmit(evt) {
     evt.preventDefault();
     const imageTitle = titleInput.value;
     const imageLink = linkInput.value;
-    const imageElement = createCard();
-    imageElement.querySelector('.elements__image').src = imageLink;
-    imageElement.querySelector('.elements__image').alt = imageTitle;
-    imageElement.querySelector('.elements__text').textContent = `${imageTitle}`;
+    const imageElement = createCard(imageTitle, imageLink);
     cardsList.prepend(imageElement);
     closePopup(imagePopup);
 }
