@@ -57,9 +57,31 @@ addCardsArray();
 //Объявление функций 
 function openPopup(popup) {
     popup.classList.add('popup_opened');
+    document.addEventListener('keydown', handleEscButton);
+    popup.addEventListener('click', handleBgClick);
+    makeButtonInactive(popup);
 }
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
+    document.removeEventListener('keydown', handleEscButton);
+    document.removeEventListener('click', handleBgClick);
+    makeButtonInactive(popup);
+}
+function makeButtonInactive(popup) {
+    if(popup.id ==='profile-popup' || popup.id === 'image-popup')
+{popup.querySelector('.popup__submit-button').classList.add('popup__submit-button_type_disabled')}
+}
+function handleEscButton(evt) {
+    if (evt.key === 'Escape') {
+        const target = document.querySelector('.popup_opened');
+        closePopup(target);
+    }
+}
+function handleBgClick (evt) {
+    const targetPopup = document.querySelector('.popup_opened');
+    if (evt.currentTarget.className === evt.target.className) {
+        closePopup(targetPopup);
+    }
 }
 //(для profile)
 function startProfilePopup() {
@@ -70,11 +92,11 @@ function startProfilePopup() {
 }
 function handleProfileFormSubmit(evt) {
     evt.preventDefault();
-    const userName = nameInput.value;
-    const userJob = jobInput.value;
-    profileName.textContent = userName;
-    profileJob.textContent = userJob;
-    closePopup(profilePopup);
+        const userName = nameInput.value;
+        const userJob = jobInput.value;
+        profileName.textContent = userName;
+        profileJob.textContent = userJob;
+        closePopup(profilePopup);
 }
 //(для image)
 function createCard(name, link) {
@@ -132,15 +154,15 @@ function startImageViewPopup(evt) {
 closeButtons.forEach((button) => {
     const popup = button.closest('.popup');
     button.addEventListener('click', () => closePopup(popup));
-  });
+});
 //Для profile
-editProfileButton.addEventListener('click', function() {
+editProfileButton.addEventListener('click', function () {
     openPopup(profilePopup);
     startProfilePopup();
 });
 profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 //Для image
-addButton.addEventListener('click', function() {
+addButton.addEventListener('click', function () {
     openPopup(imagePopup);
     imageForm.reset();
 });
