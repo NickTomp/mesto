@@ -58,18 +58,17 @@ addCardsArray();
 function openPopup(popup) {
     popup.classList.add('popup_opened');
     document.addEventListener('keydown', handleEscButton);
-    popup.addEventListener('click', handleBgClick);
-    makeButtonInactive(popup);
+    popup.addEventListener('mousedown', handleBgClick);
+    
 }
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', handleEscButton);
-    document.removeEventListener('click', handleBgClick);
-    makeButtonInactive(popup);
+    popup.removeEventListener('click', handleBgClick);
 }
 function makeButtonInactive(popup) {
-    if(popup.id ==='profile-popup' || popup.id === 'image-popup')
-{popup.querySelector('.popup__submit-button').classList.add('popup__submit-button_type_disabled')}
+   const targetButton = popup.querySelector('.popup__submit-button');
+   targetButton.classList.add('popup__submit-button_type_disabled');
 }
 function handleEscButton(evt) {
     if (evt.key === 'Escape') {
@@ -165,5 +164,6 @@ profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 addButton.addEventListener('click', function () {
     openPopup(imagePopup);
     imageForm.reset();
+    makeButtonInactive(imagePopup);
 });
 imageFormElement.addEventListener('submit', handleImageFormSubmit);

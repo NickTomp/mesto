@@ -7,7 +7,7 @@
     font-weight: 400;
     font-size: 18px;
     line-height: 22px;
-    margin: 48px 36px 37px;
+    margin: 13px 36px 35px;
     padding: 0;
     border: none;
     border-radius: 2px;
@@ -20,7 +20,7 @@
     .popup__submit-button {
         width: 238px;
         height: 46px;
-        margin: 45px 22px 25px;
+        margin: 15px 22px 25px;
         font-size: 14px;
         line-height: 17px;
     }
