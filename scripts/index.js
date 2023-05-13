@@ -69,6 +69,7 @@ function closePopup(popup) {
 function makeButtonInactive(popup) {
    const targetButton = popup.querySelector('.popup__submit-button');
    targetButton.classList.add('popup__submit-button_type_disabled');
+   targetButton.setAttribute('disabled', 'disabled');
 }
 function handleEscButton(evt) {
     if (evt.key === 'Escape') {
@@ -158,12 +159,14 @@ closeButtons.forEach((button) => {
 editProfileButton.addEventListener('click', function () {
     openPopup(profilePopup);
     startProfilePopup();
+    resetError(profileFormElement, settingsObject)
 });
 profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 //Для image
 addButton.addEventListener('click', function () {
     openPopup(imagePopup);
     imageForm.reset();
+    resetError(imageFormElement, settingsObject)
     makeButtonInactive(imagePopup);
 });
 imageFormElement.addEventListener('submit', handleImageFormSubmit);
