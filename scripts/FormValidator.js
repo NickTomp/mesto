@@ -1,4 +1,3 @@
-import {addButton, editProfileButton} from './index.js'
 export default class FormValidator {
     constructor(config, formElement) {
         this._config = config;
@@ -7,15 +6,13 @@ export default class FormValidator {
     _setEventListeners() {
         this._inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
         this._buttonElement = this._formElement.querySelector(this._config.submitButtonSelector);
-        this._toggleButtonState();
+        this.toggleButtonState();
         this._inputList.forEach((_inputElement) => {
             _inputElement.addEventListener('input', () => {
                 this._isValid(_inputElement)
-                this._toggleButtonState();
+                this.toggleButtonState();
             });
         });
-        addButton.addEventListener('click',() => {this._resetError()});
-        editProfileButton.addEventListener('click',() => {this._resetError()});
     }
     _isValid(_inputElement) {
         if (!_inputElement.validity.valid) {
@@ -24,7 +21,7 @@ export default class FormValidator {
             this._hideInputError(_inputElement);
         }
     }
-    _toggleButtonState() {
+    toggleButtonState() {
         if (this._hasInvalidInput()) {
             this._buttonElement.classList.add(this._config.inactiveButtonClass);
             this._buttonElement.setAttribute('disabled', 'disabled');
@@ -50,10 +47,10 @@ export default class FormValidator {
         errorElement.classList.remove(this._config.errorClass);
         errorElement.textContent = '';
     }
-    _resetError() {
+    resetError() {
         if (!this._hasInvalidInput()) {
             this._inputList.forEach(_inputElement => this._hideInputError(_inputElement));
-            this._toggleButtonState();
+            this.toggleButtonState();
         }
         else {this._inputList.forEach(_inputElement => this._hideInputError(_inputElement));}
     }

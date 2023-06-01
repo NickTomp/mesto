@@ -17,10 +17,10 @@ export default class Card {
         this._element.remove();
     };
     _likeToggle() {
-        this._element.querySelector('.elements__like-button').classList.toggle('elements__like-button_active');
+        this._likeButton.classList.toggle('elements__like-button_active');
     }
     _startImageViewPopup() {
-        const eventTarget = this._element.querySelector('.elements__image');
+        const eventTarget = this._image;
         const imageLink = eventTarget.src;
         const imageText = eventTarget.alt;
         viewPopupImage.src = imageLink;
@@ -29,16 +29,18 @@ export default class Card {
     }
     _setEventListeners() {
         this._element.querySelector('.elements__delete-button').addEventListener('click', () => this._deleteCard())
-        this._element.querySelector('.elements__like-button').addEventListener('click',() => this._likeToggle())
-        this._element.querySelector('.elements__image').addEventListener('click', () => {
+        this._likeButton = this._element.querySelector('.elements__like-button');
+        this._likeButton.addEventListener('click',() => this._likeToggle());
+        this._image.addEventListener('click', () => {
             this._startImageViewPopup();
             openPopup(viewPopup);
         })
     }
     createNewElement() {
         this._element = this._cloneTemplate();
-        this._element.querySelector('.elements__image').src = this._link;
-        this._element.querySelector('.elements__image').alt = this._name;
+        this._image = this._element.querySelector('.elements__image');
+        this._image.src = this._link;
+        this._image.alt = this._name;
         this._element.querySelector('.elements__text').textContent = `${this._name}`;
         this._setEventListeners();
         return this._element;

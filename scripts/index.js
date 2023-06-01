@@ -73,11 +73,6 @@ function closePopup(popup) {
     document.removeEventListener('keydown', handleEscButton);
     popup.removeEventListener('click', handleBgClick);
 }
-function makeButtonInactive(popup) {
-   const targetButton = popup.querySelector('.popup__submit-button');
-   targetButton.classList.add('popup__submit-button_type_disabled');
-   targetButton.setAttribute('disabled', 'disabled');
-}
 function handleEscButton(evt) {
     if (evt.key === 'Escape') {
         const target = document.querySelector('.popup_opened');
@@ -85,7 +80,7 @@ function handleEscButton(evt) {
     }
 }
 function handleBgClick (evt) {
-    const targetPopup = document.querySelector('.popup_opened');
+    const targetPopup = evt.target;
     if (evt.currentTarget.className === evt.target.className) {
         closePopup(targetPopup);
     }
@@ -106,29 +101,36 @@ function handleProfileFormSubmit(evt) {
         closePopup(profilePopup);
 }
 //(для image)
+function createCard(link, name, selector) {
+    const newElement = new Card(link, name, selector);
+    const imageElement = newElement.createNewElement();
+    return imageElement;
+}
 function addCardsArray() {
     for (let i = 0; i < initialCards.length; i++) {
-        const newElement = new Card(initialCards[i].link, initialCards[i].name, 'image-element');
-        const imageElement = newElement.createNewElement();
-        cardsList.append(imageElement);
+        const newCard = createCard(initialCards[i].link, initialCards[i].name, 'image-element');    
+        cardsList.append(newCard);
     }
 }
 function handleImageFormSubmit(evt) {
     evt.preventDefault();
     const imageTitle = titleInput.value;
     const imageLink = linkInput.value;
-    const newElement = new Card(imageLink, imageTitle, 'image-element');
-    const imageElement = newElement.createNewElement();
-    cardsList.prepend(imageElement);
+    const newCard = createCard(imageLink, imageTitle, 'image-element');
+    cardsList.prepend(newCard);
     closePopup(imagePopup);
 }
 //Для валидации
+function buttonListeners(button, formVal) {
+    button.addEventListener('click',() => {formVal.resetError();formVal.toggleButtonState()});
+}
 function addValidation() {
-    const formList = Array.from(document.querySelectorAll(settingsObject.formSelector));
-    formList.forEach((formElement) => {
-        const newValidation = new FormValidator(settingsObject, formElement);
-        newValidation.enableValidation();
-    });
+    const profileFormVal = new FormValidator(settingsObject, profileFormElement);
+    const imageFormVal = new FormValidator(settingsObject, imageFormElement);
+    profileFormVal.enableValidation();
+    imageFormVal.enableValidation();
+    buttonListeners(editProfileButton, profileFormVal);
+    buttonListeners(addButton , imageFormVal);    
 }
 // Создание обработчиков пользовательских событий
 closeButtons.forEach((button) => {
@@ -145,12 +147,10 @@ profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 addButton.addEventListener('click', function () {
     openPopup(imagePopup);
     imageForm.reset();
-    makeButtonInactive(imagePopup);
 });
 imageFormElement.addEventListener('submit', handleImageFormSubmit);
 addValidation();
-export {editProfileButton,
-     addButton, 
+export {
      viewPopup, 
      viewPopupImage, 
      viewPopupText, 
