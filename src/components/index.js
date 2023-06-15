@@ -1,19 +1,21 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
- //Объявление переменных (для profile)
+import Section from './Section.js';
+import PopupWithForm from './PopupWithForm.js';
+import PopupWithImage from './PopupWithImage.js';
+import UserInfo from './UserInfo.js';
+//Объявление переменных (для profile)
 const profilePopup = document.querySelector('#profile-popup');
+const profilePopupHandler = new PopupWithForm('#profile-popup', handleProfileFormSubmit);
+const newInfo = new UserInfo({ name: '.profile__name', job: '.profile__job' })
 const profileFormElement = profilePopup.querySelector('.popup__form');
 const nameInput = profileFormElement.querySelector('#name-input');
 const jobInput = profileFormElement.querySelector('#job-input');
-const profileName = document.querySelector('.profile__name');
-const profileJob = document.querySelector('.profile__job');
 const editProfileButton = document.querySelector('.profile__button');
 //Объявление переменных (для image)
 const imagePopup = document.querySelector('#image-popup');
-const imageForm = imagePopup.querySelector('#add-image-form');
+const imagePopupHandler = new PopupWithForm('#image-popup', handleImageFormSubmit)
 const imageFormElement = imagePopup.querySelector('.popup__form');
-const titleInput = imageFormElement.querySelector('#title-input');
-const linkInput = imageFormElement.querySelector('#link-input');
 const addButton = document.querySelector('.profile__add-button');
 const initialCards = [
     {
@@ -47,11 +49,9 @@ const initialCards = [
         alt: 'Байкал'
     }
 ];
-const cardsList = document.querySelector('.elements');
 const viewPopup = document.querySelector('#view-popup');
 const viewPopupImage = viewPopup.querySelector('.popup__image');
 const viewPopupText = viewPopup.querySelector('.popup__caption');
-const closeButtons = document.querySelectorAll('.popup__close-button');
 const settingsObject = {
     formSelector: '.popup__form',
     inputSelector: '.popup__text-input',
@@ -59,70 +59,48 @@ const settingsObject = {
     inactiveButtonClass: 'popup__submit-button_type_disabled',
     inputErrorClass: 'popup__text-input_type_error',
     errorClass: 'popup__input-error_active'
-  }
+}
 //Создание первичных событий
 addCardsArray();
 //Объявление функций 
-function openPopup(popup) {
-    popup.classList.add('popup_opened');
-    document.addEventListener('keydown', handleEscButton);
-    popup.addEventListener('mousedown', handleBgClick); 
-} 
-function closePopup(popup) {
-    popup.classList.remove('popup_opened');
-    document.removeEventListener('keydown', handleEscButton);
-    popup.removeEventListener('click', handleBgClick);
-}
-function handleEscButton(evt) {
-    if (evt.key === 'Escape') {
-        const target = document.querySelector('.popup_opened');
-        closePopup(target);
-    }
-}
-function handleBgClick (evt) {
-    const targetPopup = evt.target;
-    if (evt.currentTarget.className === evt.target.className) {
-        closePopup(targetPopup);
-    }
-}
 //(для profile)
 function startProfilePopup() {
-    const userName = profileName.textContent;
-    const userJob = profileJob.textContent;
-    nameInput.value = userName;
-    jobInput.value = userJob;
+    const currentInfo = newInfo.getUserInfo()
+    nameInput.value = currentInfo.name;
+    jobInput.value = currentInfo.job;
 }
-function handleProfileFormSubmit(evt) {
+function handleProfileFormSubmit(evt, values) {
     evt.preventDefault();
-        const userName = nameInput.value;
-        const userJob = jobInput.value;
-        profileName.textContent = userName;
-        profileJob.textContent = userJob;
-        closePopup(profilePopup);
+    newInfo.setUserInfo(values);
 }
 //(для image)
-function createCard(link, name, selector) {
-    const newElement = new Card(link, name, selector);
-    const imageElement = newElement.createNewElement();
-    return imageElement;
+function renderCards(item) {
+    const card = new Card(item.link, item.name, 'image-element', handleCardClick);
+    return card.createNewElement();
 }
 function addCardsArray() {
-    for (let i = 0; i < initialCards.length; i++) {
-        const newCard = createCard(initialCards[i].link, initialCards[i].name, 'image-element');    
-        cardsList.append(newCard);
-    }
+    const newSection = new Section({ items: initialCards, renderer: renderCards }, '.elements');
+    newSection.renderItems();
 }
-function handleImageFormSubmit(evt) {
+function createCard(imgLink, imgName) {
+    const newElement = renderCards({ link: imgLink, name: imgName })
+    const newSection = new Section({}, '.elements');
+    newSection.addItem(newElement, false);
+}
+function handleCardClick(img) {
+    const imagePopup = new PopupWithImage('#view-popup')
+    imagePopup.open(img);
+    imagePopup.setEventListeners()
+}
+function handleImageFormSubmit(evt, values) {
     evt.preventDefault();
-    const imageTitle = titleInput.value;
-    const imageLink = linkInput.value;
-    const newCard = createCard(imageLink, imageTitle, 'image-element');
-    cardsList.prepend(newCard);
-    closePopup(imagePopup);
+    const imageTitle = values.title;
+    const imageLink = values.link;
+    createCard(imageLink, imageTitle);
 }
-//Для валидации
+//(Для валидации)
 function buttonListeners(button, formVal) {
-    button.addEventListener('click',() => {formVal.resetError();formVal.toggleButtonState()});
+    button.addEventListener('click', () => { formVal.resetError(); formVal.toggleButtonState() });
 }
 function addValidation() {
     const profileFormVal = new FormValidator(settingsObject, profileFormElement);
@@ -130,30 +108,22 @@ function addValidation() {
     profileFormVal.enableValidation();
     imageFormVal.enableValidation();
     buttonListeners(editProfileButton, profileFormVal);
-    buttonListeners(addButton , imageFormVal);    
+    buttonListeners(addButton, imageFormVal);
 }
 // Создание обработчиков пользовательских событий
-closeButtons.forEach((button) => {
-    const popup = button.closest('.popup');
-    button.addEventListener('click', () => closePopup(popup));
-});
 //Для profile
+profilePopupHandler.setEventListeners();
 editProfileButton.addEventListener('click', function () {
-    openPopup(profilePopup);
+    profilePopupHandler.open();
     startProfilePopup();
 });
-profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 //Для image
+imagePopupHandler.setEventListeners();
 addButton.addEventListener('click', function () {
-    openPopup(imagePopup);
-    imageForm.reset();
+    imagePopupHandler.open();
 });
-imageFormElement.addEventListener('submit', handleImageFormSubmit);
 addValidation();
 export {
-     viewPopup, 
-     viewPopupImage, 
-     viewPopupText, 
-     settingsObject,
-     openPopup,
-    };
+    viewPopupImage,
+    viewPopupText,
+};
