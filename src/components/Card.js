@@ -7,7 +7,7 @@ export default class Card {
     }
     _cloneTemplate() {
         const imageTemplate = document
-            .querySelector(`#${this._templateSelector}`)
+            .querySelector(this._templateSelector)
             .content
             .querySelector('.elements__element')
             .cloneNode(true);
@@ -23,14 +23,15 @@ export default class Card {
         this._element.querySelector('.elements__delete-button').addEventListener('click', () => this._deleteCard())
         this._likeButton = this._element.querySelector('.elements__like-button');
         this._likeButton.addEventListener('click', () => this._likeToggle());
-        this._image.addEventListener('click', () => this._handleCardClick(this._image))
+        this._image.addEventListener('click', () => this._handleCardClick({imgName: this._name, imgLink: this._link}))
+        
     }
     createNewElement() {
         this._element = this._cloneTemplate();
         this._image = this._element.querySelector('.elements__image');
         this._image.src = this._link;
         this._image.alt = this._name;
-        this._element.querySelector('.elements__text').textContent = `${this._name}`;
+        this._element.querySelector('.elements__text').textContent = this._name;
         this._setEventListeners();
         return this._element;
     }
