@@ -39,10 +39,6 @@ const api = new Api({
   })
 const newSection = new Section({ renderer: renderCards }, '.elements');
 const popupWithImage = new PopupWithImage('#view-popup');
-//Объявление переменных (для delete)
-const deleteConfirmationPopup = document.querySelector('#delete-popup');
-//Объявление переменных (для avatar)
-const avatarEditPopup = document.querySelector('#avatar-popup');
 //Создание первичных событий
 api.getCardsArray()
 .then((cardsArray) => { 

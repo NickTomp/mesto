@@ -29,7 +29,6 @@ export default class Api {
             })
         })
         .then(submitButton.textContent = 'Сохранить')
-
     }
     addNewCard(cardLink, cardName, renderer, sectionClass, button) {
         const submitButton = button;
