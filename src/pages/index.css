@@ -13,6 +13,7 @@
 @import url(../blocks/profile/__job/profile__job.css);
 @import url(../blocks/profile/__button/profile__button.css);
 @import url(../blocks/profile/__add-button/profile__add-button.css);
+@import url(../blocks/profile/__avatar-button/profile__avatar-button.css);
 /*Импорт стилей для elements*/
 @import url(../blocks/elements/elements.css);
 @import url(../blocks/elements/__element/elements__element.css);
@@ -22,6 +23,8 @@
 @import url(../blocks/elements/__like-button/elements__like-button.css);
 @import url(../blocks/elements/__like-button/_active/elements__like-button_active.css);
 @import url(../blocks/elements/__text/elements__text.css);
+@import url(../blocks/elements/__like/elements__like.css);
+@import url(../blocks/elements/__counter/elements__counter.css);
 /*Импорт стилей для footer*/
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__author/footer__author.css);
@@ -43,3 +46,11 @@
 @import url(../blocks/popup/__container/_type/popup__container_type_view.css);
 @import url(../blocks/popup/__image/popup__image.css);
 @import url(../blocks/popup/__caption/popup__caption.css);
+/*Импорт стилей для pop-up(image delete)*/
+@import url(../blocks/popup/__container/_type/popup__container_type_delete.css);
+@import url(../blocks/popup/__submit-button/_type/popup__submit-button_type_agree.css);
+/*Импорт стилей для pop-up(avatar)*/
+@import url(../blocks/popup/__container/_type/popup__container_type_avatar.css);
+@import url(../blocks/popup/__form/_type/popup__form_type_avatar.css);
+@import url(../blocks/popup/__text-input/_type/popup__text-input_type_avatar.css);
+@import url(../blocks/popup/__submit-button/_type/popup__submit-button_type_avatar.css);

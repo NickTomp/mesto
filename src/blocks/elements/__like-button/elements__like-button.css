@@ -6,8 +6,6 @@
     border: none;
     padding: 0;
     align-self: center;
-    margin: 27px 25px 32px 0;
-
 }
 .elements__like-button:hover {
     opacity: .5;
