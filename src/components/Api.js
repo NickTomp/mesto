@@ -17,9 +17,8 @@ export default class Api {
         })
             .then(this._getDataFromResponse)
     }
-    editProfileInfo(data, button) {
-        const submitButton = button;
-        submitButton.textContent = 'Сохранение...'
+    editProfileInfo(data, button, close) {
+        button.textContent = 'Сохранение...';
         fetch(`${this._baseUrl}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
@@ -28,11 +27,10 @@ export default class Api {
                 about: data.job
             })
         })
-        .then(submitButton.textContent = 'Сохранить')
+       .then(setTimeout(close, 1000))
     }
-    addNewCard(cardLink, cardName, renderer, sectionClass, button) {
-        const submitButton = button;
-        submitButton.textContent = 'Сохранение...'
+    addNewCard(cardLink, cardName, renderer, sectionClass, button, close) {
+        button.textContent = 'Сохранение...'
         fetch(`${this._baseUrl}/cards`, {
             method: 'POST',
             headers: this._headers,
@@ -44,6 +42,7 @@ export default class Api {
         .then(this._getDataFromResponse)
         .then((res) => {
             const newElement = renderer({ 
+                 _id: res._id,
                  link: cardLink,
                  name: cardName,
                  owner: {
@@ -53,7 +52,7 @@ export default class Api {
             });
             sectionClass.addItem(newElement, false);
     })
-    .then(submitButton.textContent = 'Сохранить')
+    .then(setTimeout(close, 1000))
     }
     deleteCard(card) {
         fetch(`${this._baseUrl}/cards/${card.id}`, {
@@ -61,8 +60,6 @@ export default class Api {
             headers: this._headers,
         });
     }
-
-
     setLike(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
             method: 'PUT',
@@ -75,9 +72,8 @@ export default class Api {
             headers: this._headers,
         });
     }
-    editProfileAvatar(link, button) {
-        const submitButton = button;
-        submitButton.textContent = 'Сохранение...'
+    editProfileAvatar(link, button, close) {
+        button.textContent = 'Сохранение...'
         fetch(`${this._baseUrl}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,
@@ -85,7 +81,7 @@ export default class Api {
                 avatar: `${link}`,
             })
         })
-        .then(submitButton.textContent = 'Сохранить')
+        .then(setTimeout(close, 1000))
     }
     _getDataFromResponse(res) {
         return res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);

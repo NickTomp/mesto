@@ -13,7 +13,7 @@ const myId = '96f76a193f2e26b1ae5d7c3e';
 const profilePopup = document.querySelector('#profile-popup');
 const profilePopupSubmitButton = profilePopup.querySelector('.popup__submit-button');
 const avatarPopup = document.querySelector('#avatar-popup');
-const avatarPopupSubmitButton = profilePopup.querySelector('.popup__submit-button');
+const avatarPopupSubmitButton = avatarPopup.querySelector('.popup__submit-button');
 const avatarFormElement = avatarPopup.querySelector('.popup__form')
 const newProfilePopup = new PopupWithForm('#profile-popup', handleProfileFormSubmit);
 const newAvatarPopup = new PopupWithForm('#avatar-popup', handleAvatarFormSubmit);
@@ -57,11 +57,11 @@ function startProfilePopup() {
     jobInput.value = currentInfo.job;
 }
 function handleProfileFormSubmit(values) {
-    api.editProfileInfo(values, profilePopupSubmitButton)
+    api.editProfileInfo(values, profilePopupSubmitButton, newProfilePopup.close)
     newInfo.setUserInfo(values);
 }
 function handleAvatarFormSubmit(values) {
- api.editProfileAvatar(values.link, avatarPopupSubmitButton);
+ api.editProfileAvatar(values.link, avatarPopupSubmitButton, newAvatarPopup.close);
  newInfo.setUserAvatar(values.link);
 }
 //(для image)
@@ -70,7 +70,7 @@ function renderCards(item) {
     return card.createNewElement();
 }
 function createCard(imgLink, imgName) {
-    api.addNewCard(imgLink, imgName, renderCards, newSection, imagePopupSubmitButton);
+    api.addNewCard(imgLink, imgName, renderCards, newSection, imagePopupSubmitButton, newImagePopup.close);
 }
 function handleCardClick({imgName, imgLink}) {
     popupWithImage.open({name: imgName, link: imgLink});

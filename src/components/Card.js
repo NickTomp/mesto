@@ -41,7 +41,7 @@ export default class Card {
     _setDeleteButton() {
         if (this._ownerId !== this._myId) {this._deleteButton.remove()};
     }
-    createNewElement(isLiked) {
+    createNewElement() {
         this._element = this._cloneTemplate();
         this._element.id = this._cardId;
         this._deleteButton = this._element.querySelector('.elements__delete-button');
