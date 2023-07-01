@@ -10,10 +10,8 @@ import { settingsObject } from '../utils/constants.js'
 import './index.css';
 //Объявление переменных (для profile)
 const profile = document.querySelector('.profile');
-const myId = '96f76a193f2e26b1ae5d7c3e';
 const profilePopup = document.querySelector('#profile-popup');
 const avatarPopup = document.querySelector('#avatar-popup');
-const avatarPopupSubmitButton = avatarPopup.querySelector('.popup__submit-button');
 const avatarFormElement = avatarPopup.querySelector('.popup__form')
 const newProfilePopup = new PopupWithForm('#profile-popup', handleProfileFormSubmit);
 const newAvatarPopup = new PopupWithForm('#avatar-popup', handleAvatarFormSubmit);
@@ -26,7 +24,6 @@ const editProfileButton = document.querySelector('.profile__button');
 const editAvatarButton = document.querySelector('.profile__avatar-button');
 //Объявление переменных (для image)
 const imagePopup = document.querySelector('#image-popup');
-const imagePopupSubmitButton = imagePopup.querySelector('.popup__submit-button');
 const newImagePopup = new PopupWithForm('#image-popup', handleImageFormSubmit)
 const imageFormElement = imagePopup.querySelector('.popup__form');
 const addButton = document.querySelector('.profile__add-button');
