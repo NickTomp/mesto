@@ -4,21 +4,21 @@ export default class PopupConfirmation extends Popup {
         super(popupSelector);
         this._deleteButton = this._popup.querySelector('.popup__submit-button_type_agree'); 
     }
-    setEventListener() {
+    setEventListeners() {
+        super.setEventListeners();
         this._deleteButton.addEventListener('click', () => {
             this._handleDelete();
         })
     }
-    open(item, api) {
+    open(item, apiDeleteHandler) {
         this._item = item;
-        this._api = api;
-        super.open();
-        super.setEventListeners();
+        this._apiDeleteHandler = apiDeleteHandler;
+        super.open()
         
-    };
+    }
     _handleDelete(){
+        this._apiDeleteHandler(this._item);
         this._item.remove();
-        this._api.deleteCard(this._item);
         super.close();
         }
     }

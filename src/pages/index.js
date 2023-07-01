@@ -6,12 +6,12 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import PopupConfirmation from '../components/PopupConfirmation.js';
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api';
-import {settingsObject} from '../utils/constants.js'
+import { settingsObject } from '../utils/constants.js'
 import './index.css';
 //Объявление переменных (для profile)
+const profile = document.querySelector('.profile');
 const myId = '96f76a193f2e26b1ae5d7c3e';
 const profilePopup = document.querySelector('#profile-popup');
-const profilePopupSubmitButton = profilePopup.querySelector('.popup__submit-button');
 const avatarPopup = document.querySelector('#avatar-popup');
 const avatarPopupSubmitButton = avatarPopup.querySelector('.popup__submit-button');
 const avatarFormElement = avatarPopup.querySelector('.popup__form')
@@ -33,22 +33,27 @@ const addButton = document.querySelector('.profile__add-button');
 const api = new Api({
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-70',
     headers: {
-      authorization: 'ea3879cb-af90-42ef-bbf7-41be172d27a4',
-      'Content-Type': 'application/json'
+        authorization: 'ea3879cb-af90-42ef-bbf7-41be172d27a4',
+        'Content-Type': 'application/json'
     }
-  })
+})
 const newSection = new Section({ renderer: renderCards }, '.elements');
 const popupWithImage = new PopupWithImage('#view-popup');
 //Создание первичных событий
-api.getCardsArray()
-.then((cardsArray) => { 
-    newSection.renderItems(cardsArray)
-})
 api.getUserInfo()
-.then((data) => {
-    newInfo.setUserInfo({ name: data.name, job: data.about });
-    newInfo.setUserAvatar(data.avatar);
-})
+    .then((data) => {
+        newInfo.setUserInfo({ name: data.name, job: data.about });
+        newInfo.setUserAvatar(data.avatar);
+        profile.id = data._id;
+    })
+    .catch((err) => alert(`${err} - не удалось загрузить данные пользователя`))
+    .then(() => {
+        api.getCardsArray()
+            .then((cardsArray) => {
+                newSection.renderItems(isLiked(cardsArray))
+            })
+            .catch((err) => alert(`${err} - не удалось загрузить фотографии`))
+    })
 //Объявление функций 
 //(для profile)
 function startProfilePopup() {
@@ -57,37 +62,86 @@ function startProfilePopup() {
     jobInput.value = currentInfo.job;
 }
 function handleProfileFormSubmit(values) {
-    api.editProfileInfo(values, profilePopupSubmitButton, newProfilePopup.close)
+    newProfilePopup.renderLoading();
+    api.editProfileInfo(values)
+        .then(setTimeout(newProfilePopup.close, 1000))
+        .then(setTimeout(newProfilePopup.renderLoading, 1000))
+        .catch((err) => alert(`${err} - не удалось обновить данные профиля`))
     newInfo.setUserInfo(values);
 }
 function handleAvatarFormSubmit(values) {
- api.editProfileAvatar(values.link, avatarPopupSubmitButton, newAvatarPopup.close);
- newInfo.setUserAvatar(values.link);
+    newAvatarPopup.renderLoading();
+    api.editProfileAvatar(values.link)
+        .then(setTimeout(newAvatarPopup.close, 1000))
+        .then(setTimeout(newAvatarPopup.renderLoading, 1000))
+        .catch((err) => alert(`${err} - не удалось обновить аватар профиля`))
+    newInfo.setUserAvatar(values.link);
 }
 //(для image)
+function isLiked(array) {
+    array.forEach(card => {
+        card.likes.forEach((like) => {
+            if (like._id === profile.id) {
+                card.isLiked = true
+            }
+        })
+    });
+    return array
+}
+function HandleLikeToggle(likeButton, cardId, counter) {
+    if (likeButton.classList.contains('elements__like-button_active')) { 
+        api.removeLike(cardId)
+        .then((res) => res.json())
+        .then((data) => counter.textContent = data.likes.length)
+        .catch((err) => alert(`${err} - не удалось убрать лайк`))
+    } else { 
+        api.setLike(cardId)
+        .then((res) => res.json())
+        .then((data) => counter.textContent = data.likes.length)
+        .catch((err) => alert(`${err} - не удалось добавить лайк`))
+    }
+}
+function HandleDeleteCard(item) {
+    api.deleteCard(item)
+}
 function renderCards(item) {
-    const card = new Card(item, api, '#image-element', handleCardClick, handleCardDelete, myId);
+    const card = new Card(item, '#image-element', handleCardClick, handleCardDelete, HandleLikeToggle, profile.id);
     return card.createNewElement();
 }
 function createCard(imgLink, imgName) {
-    api.addNewCard(imgLink, imgName, renderCards, newSection, imagePopupSubmitButton, newImagePopup.close);
+    newImagePopup.renderLoading();
+    api.addNewCard(imgLink, imgName)
+        .then((res) => {
+            const newElement = renderCards({
+                _id: res._id,
+                link: res.link,
+                name: res.name,
+                owner: {
+                    _id: res.owner._id
+                },
+                likes: res.likes,
+            })
+            newSection.addItem(newElement, false)
+        })
+        .then(setTimeout(newImagePopup.close, 1000))
+        .then(setTimeout(newImagePopup.renderLoading, 1000))
+        .catch((err) => alert(`${err} - не удалось добавить новую карточку`))
 }
-function handleCardClick({imgName, imgLink}) {
-    popupWithImage.open({name: imgName, link: imgLink});
+function handleCardClick({ imgName, imgLink }) {
+    popupWithImage.open({ name: imgName, link: imgLink });
 }
-newConfirmationPopup.setEventListener();
+newConfirmationPopup.setEventListeners();
 function handleCardDelete(item) {
-    newConfirmationPopup.open(item, api);
-
+    newConfirmationPopup.open(item, HandleDeleteCard);
 }
-function handleImageFormSubmit(values) {  
+function handleImageFormSubmit(values) {
     const imageTitle = values.title;
     const imageLink = values.link;
     createCard(imageLink, imageTitle);
 }
 //(Для валидации)
 function addOpenButtonListener(button, formVal) {
-    button.addEventListener('click', () =>  formVal.resetValidaton());
+    button.addEventListener('click', () => formVal.resetValidaton());
 }
 function addValidation() {
     const profileFormVal = new FormValidator(settingsObject, profileFormElement);
@@ -110,7 +164,7 @@ editProfileButton.addEventListener('click', function () {
 newAvatarPopup.setEventListeners();
 editAvatarButton.addEventListener('click', function () {
     newAvatarPopup.open();
-    
+
 });
 //Для image
 newImagePopup.setEventListeners();

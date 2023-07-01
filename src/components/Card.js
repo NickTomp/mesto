@@ -1,7 +1,7 @@
 export default class Card {
-    constructor(item, api, selector, handleCardClick, deleteHandler, myId) {
+    constructor(item, selector, handleCardClick, deleteHandler, likeHandler, myId) {
+        this._item = item
         this._likesArray = item.likes
-        this._api = api
         this._ownerId = item.owner._id;
         this._cardId = item._id
         this._myId = myId
@@ -11,6 +11,7 @@ export default class Card {
         this._numberOfLikes = item.likes.length;
         this._handleCardClick = handleCardClick;
         this._handleCardDelete = deleteHandler;
+        this._likeHandler = likeHandler;
     }
     _cloneTemplate() {
         const imageTemplate = document
@@ -21,16 +22,13 @@ export default class Card {
         return imageTemplate;
     }
     _likeToggle() {
-        if (this._likeButton.classList.contains('elements__like-button_active')) { 
-            this._api.removeLike(this._cardId)
-            .then((res) => res.json())
-            .then((data) => this._likesCounter.textContent = data.likes.length)
-        } else { 
-            this._api.setLike(this._cardId)
-            .then((res) => res.json())
-            .then((data) => this._likesCounter.textContent = data.likes.length)
-        }
+        this._likeHandler(this._likeButton, this._cardId, this._likesCounter)
         this._likeButton.classList.toggle('elements__like-button_active');
+    }
+    _isLiked() {
+        if (this._item.isLiked === true) {
+            this._likeButton.classList.add('elements__like-button_active');
+        }
     }
     _setEventListeners() {
         if(this._deleteButton !== null){this._deleteButton.addEventListener('click', () => this._handleCardDelete(this._element))}
@@ -53,6 +51,7 @@ export default class Card {
         this._likesCounter.textContent = this._numberOfLikes;
         this._element.querySelector('.elements__text').textContent = this._name;
         this._setEventListeners();
+        this._isLiked();
         return this._element;
     }
 }

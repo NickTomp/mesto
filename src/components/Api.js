@@ -17,9 +17,8 @@ export default class Api {
         })
             .then(this._getDataFromResponse)
     }
-    editProfileInfo(data, button, close) {
-        button.textContent = 'Сохранение...';
-        fetch(`${this._baseUrl}/users/me`, {
+    editProfileInfo(data) {
+        return fetch(`${this._baseUrl}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
@@ -27,11 +26,10 @@ export default class Api {
                 about: data.job
             })
         })
-       .then(setTimeout(close, 1000))
+       .then(this._getDataFromResponse)
     }
-    addNewCard(cardLink, cardName, renderer, sectionClass, button, close) {
-        button.textContent = 'Сохранение...'
-        fetch(`${this._baseUrl}/cards`, {
+    addNewCard(cardLink, cardName) {
+        return fetch(`${this._baseUrl}/cards`, {
             method: 'POST',
             headers: this._headers,
             body: JSON.stringify({
@@ -40,19 +38,6 @@ export default class Api {
             })
         })
         .then(this._getDataFromResponse)
-        .then((res) => {
-            const newElement = renderer({ 
-                 _id: res._id,
-                 link: cardLink,
-                 name: cardName,
-                 owner: {
-                    _id: res.owner._id
-                 },
-                 likes: res.likes,
-            });
-            sectionClass.addItem(newElement, false);
-    })
-    .then(setTimeout(close, 1000))
     }
     deleteCard(card) {
         fetch(`${this._baseUrl}/cards/${card.id}`, {
@@ -72,16 +57,15 @@ export default class Api {
             headers: this._headers,
         });
     }
-    editProfileAvatar(link, button, close) {
-        button.textContent = 'Сохранение...'
-        fetch(`${this._baseUrl}/users/me/avatar`, {
+    editProfileAvatar(link) {
+        return fetch(`${this._baseUrl}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
                 avatar: `${link}`,
             })
         })
-        .then(setTimeout(close, 1000))
+        .then(this._getDataFromResponse)
     }
     _getDataFromResponse(res) {
         return res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);

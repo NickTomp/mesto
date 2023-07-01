@@ -10,6 +10,7 @@ export default class UserInfo {
         return {name: currentName, job: currentJob};
     };
     setUserInfo({ name, job }) {
+        if (name !== null)
         this._profileName.textContent = name;
         this._profileJob.textContent = job;
     };
