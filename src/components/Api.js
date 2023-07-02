@@ -40,22 +40,25 @@ export default class Api {
         .then(this._getDataFromResponse)
     }
     deleteCard(card) {
-        fetch(`${this._baseUrl}/cards/${card.id}`, {
+        return fetch(`${this._baseUrl}/cards/${card.id}`, {
             method: 'DELETE',
             headers: this._headers,
-        });
+        })
+        .then(this._getDataFromResponse)
     }
     setLike(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
             method: 'PUT',
             headers: this._headers,
-        });
+        })
+        .then(this._getDataFromResponse)
     }
     removeLike(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
             method: 'DELETE',
             headers: this._headers,
-        });
+        })
+        .then(this._getDataFromResponse)
     }
     editProfileAvatar(link) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {

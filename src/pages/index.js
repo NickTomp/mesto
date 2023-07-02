@@ -43,14 +43,13 @@ api.getUserInfo()
         newInfo.setUserAvatar(data.avatar);
         profile.id = data._id;
     })
-    .catch((err) => alert(`${err} - не удалось загрузить данные пользователя`))
     .then(() => {
         api.getCardsArray()
             .then((cardsArray) => {
                 newSection.renderItems(isLiked(cardsArray))
             })
-            .catch((err) => alert(`${err} - не удалось загрузить фотографии`))
     })
+    .catch((err) => alert(`${err} - не удалось загрузить данные`))
 //Объявление функций 
 //(для profile)
 function startProfilePopup() {
@@ -63,16 +62,16 @@ function handleProfileFormSubmit(values) {
     api.editProfileInfo(values)
         .then(setTimeout(newProfilePopup.close, 1000))
         .then(setTimeout(newProfilePopup.renderLoading, 1000))
+        .then(newInfo.setUserInfo(values))
         .catch((err) => alert(`${err} - не удалось обновить данные профиля`))
-    newInfo.setUserInfo(values);
 }
 function handleAvatarFormSubmit(values) {
     newAvatarPopup.renderLoading();
     api.editProfileAvatar(values.link)
         .then(setTimeout(newAvatarPopup.close, 1000))
         .then(setTimeout(newAvatarPopup.renderLoading, 1000))
+        .then(newInfo.setUserAvatar(values.link))
         .catch((err) => alert(`${err} - не удалось обновить аватар профиля`))
-    newInfo.setUserAvatar(values.link);
 }
 //(для image)
 function isLiked(array) {
@@ -85,24 +84,23 @@ function isLiked(array) {
     });
     return array
 }
-function HandleLikeToggle(likeButton, cardId, counter) {
+function handleLikeToggle(likeButton, cardId, counter) {
     if (likeButton.classList.contains('elements__like-button_active')) { 
         api.removeLike(cardId)
-        .then((res) => res.json())
         .then((data) => counter.textContent = data.likes.length)
         .catch((err) => alert(`${err} - не удалось убрать лайк`))
     } else { 
         api.setLike(cardId)
-        .then((res) => res.json())
         .then((data) => counter.textContent = data.likes.length)
         .catch((err) => alert(`${err} - не удалось добавить лайк`))
     }
 }
-function HandleDeleteCard(item) {
+function handleDeleteCard(item) {
     api.deleteCard(item)
+    .catch((err) => alert(`${err} - удалить карточку не удалось`))
 }
 function renderCards(item) {
-    const card = new Card(item, '#image-element', handleCardClick, handleCardDelete, HandleLikeToggle, profile.id);
+    const card = new Card(item, '#image-element', handleCardClick, handleCardDelete, handleLikeToggle, profile.id);
     return card.createNewElement();
 }
 function createCard(imgLink, imgName) {
@@ -129,7 +127,7 @@ function handleCardClick({ imgName, imgLink }) {
 }
 newConfirmationPopup.setEventListeners();
 function handleCardDelete(item) {
-    newConfirmationPopup.open(item, HandleDeleteCard);
+    newConfirmationPopup.open(item, handleDeleteCard);
 }
 function handleImageFormSubmit(values) {
     const imageTitle = values.title;
